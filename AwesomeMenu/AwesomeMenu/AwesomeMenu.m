@@ -21,6 +21,7 @@ static CGFloat const kAwesomeMenuDefaultExpandRotation = M_PI;
 static CGFloat const kAwesomeMenuDefaultCloseRotation = M_PI * 2;
 static CGFloat const kAwesomeMenuDefaultAnimationDuration = 0.5f;
 static CGFloat const kAwesomeMenuStartMenuDefaultAnimationDuration = 0.3f;
+static CGFloat const kAwesomeMenuDefaultRedressAngle = 0;//sw
 
 static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float angle)
 {
@@ -48,7 +49,7 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
     BOOL _isAnimating;
 }
 
-@synthesize nearRadius, endRadius, farRadius, timeOffset, rotateAngle, menuWholeAngle, startPoint, expandRotation, closeRotation, animationDuration;
+@synthesize nearRadius, endRadius, farRadius, timeOffset, rotateAngle, menuWholeAngle, startPoint, expandRotation, closeRotation, animationDuration,redressAngle;
 @synthesize expanding = _expanding;
 @synthesize delegate = _delegate;
 @synthesize menusArray = _menusArray;
@@ -70,6 +71,7 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
         self.expandRotation = kAwesomeMenuDefaultExpandRotation;
         self.closeRotation = kAwesomeMenuDefaultCloseRotation;
         self.animationDuration = kAwesomeMenuDefaultAnimationDuration;
+        self.redressAngle = kAwesomeMenuDefaultRedressAngle;//sw
         
         self.menusArray = aMenusArray;
         
@@ -232,12 +234,19 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
         if (menuWholeAngle >= M_PI * 2) {
             menuWholeAngle = menuWholeAngle - menuWholeAngle / count;
         }
-        CGPoint endPoint = CGPointMake(startPoint.x + endRadius * sinf(i * menuWholeAngle / (count - 1)), startPoint.y - endRadius * cosf(i * menuWholeAngle / (count - 1)));
+        //sw
+        CGPoint endPoint = CGPointMake(startPoint.x + endRadius * sinf(i * menuWholeAngle / (count - 1) - redressAngle),
+                                       startPoint.y - endRadius * cosf(i * menuWholeAngle / (count - 1) - redressAngle));
         item.endPoint = RotateCGPointAroundCenter(endPoint, startPoint, rotateAngle);
-        CGPoint nearPoint = CGPointMake(startPoint.x + nearRadius * sinf(i * menuWholeAngle / (count - 1)), startPoint.y - nearRadius * cosf(i * menuWholeAngle / (count - 1)));
+        
+        CGPoint nearPoint = CGPointMake(startPoint.x + nearRadius * sinf(i * menuWholeAngle / (count - 1) - redressAngle),
+                                        startPoint.y - nearRadius * cosf(i * menuWholeAngle / (count - 1) - redressAngle));
         item.nearPoint = RotateCGPointAroundCenter(nearPoint, startPoint, rotateAngle);
-        CGPoint farPoint = CGPointMake(startPoint.x + farRadius * sinf(i * menuWholeAngle / (count - 1)), startPoint.y - farRadius * cosf(i * menuWholeAngle / (count - 1)));
-        item.farPoint = RotateCGPointAroundCenter(farPoint, startPoint, rotateAngle);  
+        
+        CGPoint farPoint = CGPointMake(startPoint.x + farRadius * sinf(i * menuWholeAngle / (count - 1) - redressAngle),
+                                       startPoint.y - farRadius * cosf(i * menuWholeAngle / (count - 1) - redressAngle));
+        item.farPoint = RotateCGPointAroundCenter(farPoint, startPoint, rotateAngle);
+        
         item.center = item.startPoint;
         item.delegate = self;
 		[self insertSubview:item belowSubview:_startButton];

@@ -23,7 +23,7 @@
     
     UIImage *starImage = [UIImage imageNamed:@"icon-star.png"];
     
-    // Default Menu
+  /*  // Default Menu
  
     AwesomeMenuItem *starMenuItem1 = [[AwesomeMenuItem alloc] initWithImage:storyMenuItemImage
                                                                highlightedImage:storyMenuItemImagePressed 
@@ -72,9 +72,9 @@
     AwesomeMenu *menu = [[AwesomeMenu alloc] initWithFrame:self.window.bounds startItem:startItem optionMenus:menus];
     menu.delegate = self;
     
-    
+  */  
 
-    /* Path-like customization
+//    /* Path-like customization
 
      AwesomeMenuItem *starMenuItem1 = [[AwesomeMenuItem alloc] initWithImage:storyMenuItemImage
                                                            highlightedImage:storyMenuItemImagePressed
@@ -111,10 +111,11 @@
 	menu.farRadius = 110.0f;
 	menu.endRadius = 100.0f;
 	menu.nearRadius = 90.0f;
-    menu.animationDuration = 0.3f;
-    menu.startPoint = CGPointMake(50.0, 410.0);
-     
-     */
+    menu.animationDuration = 0.4f;
+    menu.redressAngle = M_PI_2 - (M_PI - menu.menuWholeAngle)/2;//sw
+//    menu.startPoint = CGPointMake(50.0, 410.0);
+    
+//     */
     
     [self.window addSubview:menu];
     [self.window makeKeyAndVisible];
